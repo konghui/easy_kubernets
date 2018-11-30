@@ -1,0 +1,100 @@
+#!/bin/bash
+
+
+####################################################
+##             USER Configuration                          
+###################################################
+IP_ADDR=1.1.1.1
+SERVICE_IP=10.11.0.1
+CIDR=10.11.0.0/16
+CLUSTER_NAME=cluster
+USER=admin
+ETCD_INIT_PORT=2480
+
+
+export BASE_DIR=$(cd $(dirname $0); pwd)
+
+export CERT_BASE=$BASE_DIR/cert
+export BASE_PID_DIR=$BASE_DIR/pid
+export BASE_LOG_DIR=$BASE_DIR/log
+
+## ca cert configuration
+export CA_CERT_DIR=$CERT_BASE/ca
+export CA_CERT_FILE=$CA_CERT_DIR/ca.pem
+export CA_KEY_FILE=$CA_CERT_DIR/ca-key.pem
+
+## etcd cert configuration
+export ETCD_CERT_DIR=$CERT_BASE/etcd
+export ETCD_CERT_FILE=$ETCD_CERT_DIR/etcd.pem
+export ETCD_KEY_FILE=$ETCD_CERT_DIR/etcd-key.pem
+
+## etcd peer side cert configuration
+export ETCD_PEER_CERT_DIR=$CERT_BASE/etcd_peer
+export ETCD_PEER_CERT_FILE=$ETCD_PEER_CERT_DIR/etcd_peer.pem
+export ETCD_PEER_KEY_FILE=$ETCD_PEER_CERT_DIR/etcd_peer-key.pem
+
+## k8s admin cert configuration
+export K8S_ADMIN_CERT_DIR=$CERT_BASE/admin
+export K8S_ADMIN_CERT_FILE=$K8S_ADMIN_CERT_DIR/admin.pem
+export K8S_ADMIN_KEY_FILE=$K8S_ADMIN_CERT_DIR/admin-key.pem
+
+## k8s apiserver cert configuration
+export K8S_APISERVER_CERT_DIR=$CERT_BASE/apiserver
+export K8S_APISERVER_CERT_FILE=$K8S_APISERVER_CERT_DIR/apiserver.pem
+export K8S_APISERVER_KEY_FILE=$K8S_APISERVER_CERT_DIR/apiserver-key.pem
+
+## k8s node cert configuration
+export K8S_NODE_CERT_DIR=$CERT_BASE/node
+export K8S_NODE_CERT_FILE=$K8S_NODE_CERT_DIR/node.pem
+export K8S_NODE_KEY_FILE=$K8S_NODE_CERT_DIR/node-key.pem
+
+############################################################
+##                      K8S Configuration
+############################################################
+
+export K8S_SERVICE_IP=$SERVICE_IP
+export MASTER_IPV4=$IP_ADDR
+export WORK_IPV4=$IP_ADDR
+export K8S_NETWORK=$CIDR
+export K8S_CONFIG_DIR=$BASE_DIR/etc
+export K8S_LOG_DIR=$BASE_LOG_DIR
+export K8S_TOKEN_FILE=$K8S_CONFIG_DIR/token.csv
+export K8S_CLUSTER_NAME=$CLUSTER_NAME
+export K8S_CONTEXT_NAME=$K8S_CLUSTER_NAME
+export K8S_ADMIN_USER=$USER
+export K8S_KUBE_CONFIG_FILE=$K8S_CONFIG_DIR/kubeconfig
+export K8S_KUBE_APISERVER_SECURE_PORT=6543
+export K8S_KUBE_APISERVER_UNSECURE_PORT=8180
+export K8S_KUBE_CONTROLLER_MANAGER_PORT=10352
+export K8S_KUBE_SCHEDULER_PORT=10351
+############################################################
+##                K8S path Configuration
+############################################################
+export K8S_BASE_DIR=$BASE_DIR/kubernets
+export K8S_KUBE_APISERVER_BINARY=$K8S_BASE_DIR/kube-apiserver
+export K8S_KUBELET_BINARY=$K8S_BASE_DIR/kubelet
+export K8S_KUBE_CONTROLLER_MANAGER_BINARY=$K8S_BASE_DIR/kube-controller-manager
+export K8S_KUBE_SCHEDULER_BINARY=$K8S_BASE_DIR/kube-scheduler
+export K8S_KUBECTL_BINARY=$K8S_BASE_DIR/kubectl
+
+############################################################
+##          ETCD path Configuration
+############################################################
+export ETCD_BASE_DIR=$BASE_DIR/etcd
+export ETCD_BINARY=$ETCD_BASE_DIR/etcd
+export ETCD_DATA_DIR=$ETCD_BASE_DIR/data
+export ETCD_LOG_DIR=$BASE_LOG_DIR
+
+export ETCD_BASE_PORT=$ETCD_INIT_PORT
+export ETCD_NODE1_NAME=node1
+export ETCD_NODE1_LISTEN_URL=https://${MASTER_IPV4}:$ETCD_BASE_PORT
+export ETCD_NODE1_CLIENT_URL=https://${MASTER_IPV4}:$((ETCD_BASE_PORT-1))
+
+export ETCD_NODE2_NAME=node2
+export ETCD_NODE2_LISTEN_URL=https://${MASTER_IPV4}:$((ETCD_BASE_PORT-2))
+export ETCD_NODE2_CLIENT_URL=https://${MASTER_IPV4}:$((ETCD_BASE_PORT-3))
+
+export ETCD_NODE3_NAME=node3
+export ETCD_NODE3_LISTEN_URL=https://${MASTER_IPV4}:$((ETCD_BASE_PORT-4))
+export ETCD_NODE3_CLIENT_URL=https://${MASTER_IPV4}:$((ETCD_BASE_PORT-5))
+

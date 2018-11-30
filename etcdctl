@@ -1,0 +1,4 @@
+#!/bin/bash
+export ETCDCTL_API=3
+. config
+./etcdctl --endpoints ETCD_NODE1_CLIENT_URL --cert K8S_ADMIN_CERT_FILE --key K8S_ADMIN_KEY_FILE --cacert CA_CERT_FILE $@
